@@ -31,7 +31,7 @@ TRACKER_ABBR = {'openbt':       'udp://tracker.openbittorrent.com:80',
 
 # whether or not py3createtorrent is allowed to advertise itself
 # through the torrents' comment fields
-ADVERTISE = True
+ADVERTISE = False
 
 # /CONFIGURATION
 # ##############
@@ -39,7 +39,7 @@ ADVERTISE = True
 # do not touch anything below this line unless you know what you're doing!
 
 
-VERSION =   '1.0.0-dev'
+VERSION =   '0.9.5'
 
 # Note:
 #  Kilobyte = kB  = 1000 Bytes
@@ -469,6 +469,10 @@ def main(argv):
     parser.add_option("-c", "--comment", type="string", action="store",
                       dest="comment", default=False,
                       help="include comment")
+                      
+    parser.add_option("-s", "--source", type="string", action="store",
+                      dest="source", default=False,
+                      help="source string, used to create a different infohash for cross-seeding")
 
     parser.add_option("-f", "--force", action="store_true",
                       dest="force", default=False,
@@ -672,7 +676,7 @@ def main(argv):
         metainfo['creation date'] = options.date
 
     # Add the "created by" field.
-    metainfo['created by'] = 'py3createtorrent v%s' % VERSION
+    metainfo['created by'] = 'py3createtorrent'
 
     # Add user's comment or advertise py3createtorrent (unless this behaviour
     # has been disabled by the user).
@@ -682,7 +686,14 @@ def main(argv):
         if len(options.comment) > 0:
             metainfo['comment'] = options.comment
     elif ADVERTISE:
-        metainfo['comment'] = "created with " + metainfo['created by']
+        metainfo['comment'] = ""
+        
+    # Add a source string, which is used to create a different infohash for cross-seeding
+    if isinstance(options.source, str):
+        if len(options.source) > 0:
+            metainfo['info']['source'] = options.source
+    #else:
+    #    metainfo['info']['source'] = ""
 
     # Add the name field.
     # By default this is the name of directory or file the torrent
@@ -796,6 +807,7 @@ date']).isoformat(' ')
           "  Size:             %s\n"
           "  Pieces:           %d x %d KiB\n"
           "  Comment:          %s\n"
+          "  Source String:    %s\n"
           "  Private:          %s\n"
           "  Creation date:    %s\n"
           "  Primary tracker:  %s\n"
@@ -805,7 +817,8 @@ date']).isoformat(' ')
          size,
          piece_count,
          piece_length / KIB,
-         metainfo['comment'] if 'comment'       in metainfo else "(none)",
+         metainfo['comment'] if 'comment' in metainfo else "(none)",
+         metainfo['info']['source'] if 'source' in metainfo['info'] else "(none)",
          "yes" if options.private else "no",
          creation_date,
          metainfo['announce'],
