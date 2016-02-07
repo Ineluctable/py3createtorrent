@@ -8,11 +8,11 @@ py3createtorrent is a comprehensive shell/commandline utility for creating torre
 
 Some of the features:
 
-you can create huge torrents for any amount of data
-you can add a comment to the torrent file
-you can create private torrents (disabled DHT, ...)
-you can create torrents with multiple trackers
-you can exclude specific files/folders
-you can exclude files/folders based on regular expressions
-you can specify custom piece sizes
-you can specify custom creation dates
+* you can create huge torrents for any amount of data
+* you can add a comment to the torrent file
+* you can create private torrents (disabled DHT, ...)
+* you can create torrents with multiple trackers
+* you can exclude specific files/folders
+* you can exclude files/folders based on regular expressions
+* you can specify custom piece sizes
+* you can specify custom creation dates
