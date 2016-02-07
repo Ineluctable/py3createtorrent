@@ -15,9 +15,9 @@ Some of the features:
 * you can exclude specific files/folders
 * you can exclude files/folders based on regular expressions
 * you can specify custom piece sizes
-* you can specify custom creation dates  
+* you can specify custom creation dates
 
--  
+
 
 ```
 Usage: py3createtorrent.py [options] <file-or-directory> <main-tracker-url> [<backup-tracker-url> ...]
